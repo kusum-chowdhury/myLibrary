@@ -12,9 +12,12 @@ let myLibrary = [{
     name: "Lord of the rings",
     author: 'John Ronald Reuel Tolkien',
     pages: 9250,
-    read: 'Read'
+    read: 'read'
   },
   ];
+
+// Add the event listener to the button
+button.addEventListener("click", addBookToLibrary);
 
   //logic to toggle read status of the book
 function toggleReadStatus(index) {
@@ -40,15 +43,13 @@ class Book {
     }
   }
 
-// Add the event listener to the button
-button.addEventListener("click", addBookToLibrary);
-
 // create newbook object and push to the myLibrary
 function addBookToLibrary() {
     if(nameBook.value.length == 0 || author.value.length ==0){
       alert("please enter the name and author of the book");
       return;
     }
+    readStatus = read.checked === true ? "read" : "not read";
     const newBook = new Book(nameBook.value, author.value, pages.value, readStatus);
     myLibrary.push(newBook)
     updateLocalStorage();
