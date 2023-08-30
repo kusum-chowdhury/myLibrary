@@ -23,6 +23,13 @@ function toggleReadStatus(index) {
     render();
   }
 
+  //to delete the book from myLibrary
+function deleteBookByName(name) {
+    myLibrary = myLibrary.filter(item => item.name !== name);
+    updateLocalStorage();
+    render();
+  }
+
   //book object constructor
 class Book {
     constructor(name, author, pages, read) {
@@ -42,7 +49,6 @@ function addBookToLibrary() {
       alert("please enter the name and author of the book");
       return;
     }
-  
     const newBook = new Book(nameBook.value, author.value, pages.value, readStatus);
     myLibrary.push(newBook)
     updateLocalStorage();
@@ -67,7 +73,14 @@ function render(){
     <li><button class="delete-btn" data-name="${item.name}">Delete</button></li>`;
     card.appendChild(listItem);
 })
-    
+     // Attach event listeners to delete buttons after rendering
+  const deleteButtons = document.querySelectorAll('.delete-btn');
+  deleteButtons.forEach((deleteButton) => {
+    deleteButton.addEventListener('click', (event) => {
+      const nameToDelete = event.target.getAttribute('data-name');
+      deleteBookByName(nameToDelete);
+    });
+  });
    //event listener to toogle the read status of the book using toogleReadStatus function
     const readStatusSpans = document.querySelectorAll('.read-status');
     readStatusSpans.forEach((readStatusSpan) => {
@@ -78,10 +91,12 @@ function render(){
 })
 }
 
+//set the data to the local storage
 function updateLocalStorage(){
     localStorage.setItem('library', JSON.stringify(myLibrary));
   }
 
+//get the data library from the local storage
 function checkLocalStorage() {
     if (localStorage.getItem("library")) {
       myLibrary = JSON.parse(localStorage.getItem("library"));
