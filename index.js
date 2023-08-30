@@ -19,6 +19,7 @@ let myLibrary = [{
   //logic to toggle read status of the book
 function toggleReadStatus(index) {
     myLibrary[index].read = myLibrary[index].read === 'read' ? 'not read' : 'read';
+    updateLocalStorage();
     render();
   }
 
@@ -44,6 +45,7 @@ function addBookToLibrary() {
   
     const newBook = new Book(nameBook.value, author.value, pages.value, readStatus);
     myLibrary.push(newBook)
+    updateLocalStorage();
     nameBook.value ="";
     author.value = "";
     pages.value = ""; 
@@ -52,6 +54,7 @@ function addBookToLibrary() {
 
 //to render and show the book objects from myLibrary list
 function render(){
+    checkLocalStorage();
     card.innerHTML = '';
     myLibrary.forEach((item, index) => {
     const listItem = document.createElement('ul');
@@ -63,7 +66,6 @@ function render(){
     <li class='readStatus'><span class="read-status" data-index="${index}">${item.read}</span></li>
     <li><button class="delete-btn" data-name="${item.name}">Delete</button></li>`;
     card.appendChild(listItem);
-
 })
     
    //event listener to toogle the read status of the book using toogleReadStatus function
@@ -75,4 +77,15 @@ function render(){
       });
 })
 }
+
+function updateLocalStorage(){
+    localStorage.setItem('library', JSON.stringify(myLibrary));
+  }
+
+function checkLocalStorage() {
+    if (localStorage.getItem("library")) {
+      myLibrary = JSON.parse(localStorage.getItem("library"));
+    }
+  }
+ 
 render()
