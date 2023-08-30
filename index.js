@@ -6,6 +6,7 @@ const pages = document.querySelector('#pages')
 let read = document.getElementById('read')
 let notRead = document.getElementById('notRead')
 
+//list of book objects
 let myLibrary = [{
     name: "Lord of the rings",
     author: 'John Ronald Reuel Tolkien',
@@ -14,6 +15,7 @@ let myLibrary = [{
   },
   ];
 
+  //book object constructor
 class Book {
     constructor(name, author, pages, read) {
       this.name = name;
@@ -22,4 +24,34 @@ class Book {
       this.read = read;
     }
   }
+
+// create newbook object and push to the myLibrary
+function addBookToLibrary() {
+    if(nameBook.value.length == 0 || author.value.length ==0){
+      alert("please enter the name and author of the book");
+      return;
+    }
   
+    const newBook = new Book(nameBook.value, author.value, pages.value, readStatus);
+    myLibrary.push(newBook)
+    nameBook.value ="";
+    author.value = "";
+    pages.value = ""; 
+}
+
+//to render and show the book objects from myLibrary list
+function render(){
+    card.innerHTML = '';
+    myLibrary.forEach((item, index) => {
+    const listItem = document.createElement('ul');
+    // Create an HTML structure for the book's properties
+    listItem.innerHTML = `
+    <li class='name'><strong>Name:</strong>${item.name}</li>
+    <li class='author'><strong>Author:</strong> ${item.author}</li>
+    <li class='pages'><strong>Pages:</strong> ${item.pages}</li>
+    <li class='readStatus'><span class="read-status" data-index="${index}">${item.read}</span></li>
+    <li><button class="delete-btn" data-name="${item.name}">Delete</button></li>`;
+    card.appendChild(listItem);
+})
+}
+render()
